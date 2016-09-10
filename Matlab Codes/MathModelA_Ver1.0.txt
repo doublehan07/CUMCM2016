@@ -16,7 +16,10 @@ rsb = 15e-2
 l = 1
 g = 9.8
 
-alpha = rouwater * g * rfb ^ 2
+Length = 22.05
+lamda = 7
+
+alpha = rouwater * g * pi * rfb ^ 2
 beta1 = rouwater * g * l * (4 * pi * rgg ^ 2 + pi * rsb ^ 2) - (mfb + msb + 4 * mgg + mball) * g
 beta2 = -mfb * g
 G2 = mgg * g
@@ -28,8 +31,6 @@ beta4 = beta2 - 3.5 * (G2 - F2)
 beta5 = beta2 - 2.5 * (G2 - F2)
 beta6 = beta2 - 1.5 * (G2 - F2)
 beta7 = beta2 - 0.5 * (G2 - F2)
-Length = 22.05
-lamda = 7
 
 syms h
 Fwind = 0.625 * pi * 2 * (2 - h) * (Vwind ^ 2)
@@ -66,3 +67,6 @@ xlower = (FWIND / (lamda * g)) * asinh( (alpha * H + beta1) / FWIND - Length * l
 x = linspace(xlower,xupper)
 Catenary = (FWIND / (lamda * g)) * cosh(lamda * g * x / FWIND)
 plot(x,Catenary)
+
+syms x
+f1 = rouwater * (pi * H * rfb ^ 2 + 4 * pi * l * rgg ^ 2 + pi * l * rsb ^ 2) - mfb - 4 * mgg - msb - mball - lamda * (Length - x) 
