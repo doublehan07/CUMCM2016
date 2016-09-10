@@ -1,0 +1,68 @@
+Vwind = 12
+
+Depth = 18
+
+rouwater = 1.025e3
+
+mfb = 1e3
+mgg = 10
+msb = 1e2
+mball = 1.2e3
+
+rfb = 1
+rgg = 25e-3
+rsb = 15e-2
+
+l = 1
+g = 9.8
+
+alpha = rouwater * g * rfb ^ 2
+beta1 = rouwater * g * l * (4 * pi * rgg ^ 2 + pi * rsb ^ 2) - (mfb + msb + 4 * mgg + mball) * g
+beta2 = -mfb * g
+G2 = mgg * g
+F2 = rouwater * g * pi * l * rgg ^ 2
+G1 = msb * g
+F1 = rouwater * g * pi * l * rsb ^ 2
+beta3 = beta2 - 4 * (G2 - F2) - 0.5 * (G1 - F1)
+beta4 = beta2 - 3.5 * (G2 - F2)
+beta5 = beta2 - 2.5 * (G2 - F2)
+beta6 = beta2 - 1.5 * (G2 - F2)
+beta7 = beta2 - 0.5 * (G2 - F2)
+Length = 22.05
+lamda = 7
+
+syms h
+Fwind = 0.625 * pi * 2 * (2 - h) * (Vwind ^ 2)
+costheta1 = (alpha * h + beta3) / sqrt(Fwind ^ 2 + (alpha * h + beta3) ^ 2)
+costheta2 = (alpha * h + beta4) / sqrt(Fwind ^ 2 + (alpha * h + beta4) ^ 2)
+costheta3 = (alpha * h + beta5) / sqrt(Fwind ^ 2 + (alpha * h + beta5) ^ 2)
+costheta4 = (alpha * h + beta6) / sqrt(Fwind ^ 2 + (alpha * h + beta6) ^ 2)
+costheta5 = (alpha * h + beta7) / sqrt(Fwind ^ 2 + (alpha * h + beta7) ^ 2)
+fupper = sqrt( ((alpha * h + beta1) ^ 2) / ((lamda * g) ^ 2) + (Fwind ^ 2) / ((lamda * g) ^ 2))
+flower = sqrt( ((alpha * h + beta1) / (lamda * g) - Length) ^ 2 + (Fwind ^ 2) / ((lamda * g) ^ 2))
+f = l * (costheta1 + costheta2 + costheta3 + costheta4 + costheta5) + fupper - flower + h - Depth
+H = solve(f)
+
+H = H
+FWIND = subs(Fwind,H)
+FWIND = FWIND
+
+theta1 = atan(FWIND / (alpha * H + beta3))
+theta2 = atan(FWIND / (alpha * H + beta4))
+theta3 = atan(FWIND / (alpha * H + beta5))
+theta4 = atan(FWIND / (alpha * H + beta6))
+theta5 = atan(FWIND / (alpha * H + beta7))
+thetaCa = atan ((alpha * H + beta1) / FWIND)
+
+theta1 = theta1 * 180 / pi
+theta2 = theta2 * 180 / pi
+theta3 = theta3 * 180 / pi
+theta4 = theta4 * 180 / pi
+theta5 = theta5 * 180 / pi
+thetaCa = thetaCa * 180 / pi
+
+xupper = (FWIND / (lamda * g)) * asinh((alpha * H + beta1) / FWIND)
+xlower = (FWIND / (lamda * g)) * asinh( (alpha * H + beta1) / FWIND - Length * lamda * g / FWIND)
+x = linspace(xlower,xupper)
+Catenary = (FWIND / (lamda * g)) * cosh(lamda * g * x / FWIND)
+plot(x,Catenary)
