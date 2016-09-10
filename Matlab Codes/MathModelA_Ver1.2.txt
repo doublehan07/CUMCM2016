@@ -70,3 +70,5 @@ plot(x,Catenary)
 
 syms x
 f1 = rouwater * (pi * H * rfb ^ 2 + 4 * pi * l * rgg ^ 2 + pi * l * rsb ^ 2) - mfb - 4 * mgg - msb - mball - lamda * (Length - x) 
+X = solve(f1)
+X = X
