@@ -33,7 +33,7 @@ beta6 = beta2 - 1.5 * (G2 - F2)
 beta7 = beta2 - 0.5 * (G2 - F2)
 
 syms h
-Fwind = 0.625 * pi * 2 * (2 - h) * (Vwind ^ 2)
+Fwind = 0.625 * 2 * (2 - h) * (Vwind ^ 2)
 costheta1 = (alpha * h + beta3) / sqrt(Fwind ^ 2 + (alpha * h + beta3) ^ 2)
 costheta2 = (alpha * h + beta4) / sqrt(Fwind ^ 2 + (alpha * h + beta4) ^ 2)
 costheta3 = (alpha * h + beta5) / sqrt(Fwind ^ 2 + (alpha * h + beta5) ^ 2)
