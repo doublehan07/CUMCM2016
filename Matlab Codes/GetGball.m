@@ -41,7 +41,9 @@ global s1;
 global s2;
 global xHorizon;
 
-global HorizonFlag;
+global HorizonFlag SinkFlag;
+
+% persistent SaveXHorizon;
 
 Gball = mball * g;
 beta1 = 4 * F2 + F1 - 4 * G2 - G1 - Gfb - mball * g;
@@ -58,9 +60,10 @@ x0 = A * asinh( (alpha * H + beta1) / FWIND - Length / A);
 x1 = A * asinh((alpha * H + beta1) / FWIND);
 xupper = x1 - x0;
 HorizonFlag = 0;
+SinkFlag = 0;
 
 if (x0 < 0)
-    H = fsolve(@(h) myfho(h),0.72,optimoptions('fsolve'));
+    H = fsolve(@(h) myfho(h),10,optimoptions('fsolve'));
     FWIND = double(subs(Fwind,H));   
     A = FWIND / lamda / g;
     x1 = A * asinh((alpha * H + beta1) / FWIND);
@@ -69,7 +72,7 @@ if (x0 < 0)
     syms x;
     s = sqrt(1 + (sinh(x / A)) ^ 2);
     s1 = double(int(s, 0, x1));
-    s2 = (rouwater * H * pi * rfb ^ 2 + 4 * F2 + F1) - (Gfb + 4 * G2 + G1 + mball * g) / (lamda * g);
+    s2 = ((rouwater * H * pi * rfb ^ 2 * g + 4 * F2 + F1) - (Gfb + 4 * G2 + G1 + mball * g)) / (lamda * g);
     xHorizon = Length - s1;
     HorizonFlag = 1;
 end
@@ -85,5 +88,17 @@ thetaCa = atan ((alpha * H + beta1) / FWIND) * 180 / pi;
 thetaMao = atan(Fy3 / FWIND) * 180 / pi;
 
 yupper = Depth - (cos(theta1 * pi / 180) + cos(theta2 * pi / 180) + cos(theta3 * pi / 180) + cos(theta4 * pi / 180) + cos(theta5 * pi / 180) + H);
+
+% if(H == 2.0000000) 
+%     if isempty(SaveXHorizon)
+%         SaveXHorizon = xHorizon;
+%     end
+% end
+
+if (H >= 2.0000000)
+    SinkFlag = 1;
+%     xHorizon = SaveXHorizon;
+    yupper = ((rouwater * g * 2 * pi * rfb ^ 2 + 4 * F2 + F1) - (Gfb + 4 * G2 + G1 + mball * g)) / (lamda * g);
+end
 
 end
