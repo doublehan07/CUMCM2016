@@ -1,10 +1,8 @@
 # Matlab Codes
-This path includes a tool called ProblemGo. It is for getting solutions of the Problem Set A of CUMCM2016.
+- Ans
 
-Use Matlab to run these script. My Matlab version is R2015b.
+You can find some screenshots of workspace of Matlab (with answers for separate questions) here.
 
-Open ProblemGo.m for more details.
+- ProblemGo7.0
 
-By haldak
-
-Sep.12,2016
+A tool for solving Problem Set A.
